@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no
+		initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+		<link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+    <title>AUTOBOTS | SCOREBOARD</title>
+
+    <style>
+        @font-face {
+            font-family: antonio;
+            src: url(Antonio-Light.ttf);
+        }
+
+        html {
+            font-family: antonio;
+            font-size: 1em;
+            height: 100%;
+            background: url('background1.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .topic h1{
+        color: white;
+        text-decoration: underline;
+
+        }
+
+        #submit {
+            margin-left: 25px;
+            margin-top: 15px;
+            padding: 10px;
+            background: none;
+            border: solid white 1px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        #boards {
+            margin-left: 60px;
+            margin-right: 60px;
+        }
+
+        .footerText {
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        .footerInput {
+            background: none;
+            font-size: 20px;
+            color: white;
+            border: solid white 1px;
+        }
+
+        footer {
+            opacity: 0;
+            color: white;
+            background: linear-gradient(to right, #422828 0%, #0f0b0f 100%);
+            position: absolute;
+            bottom: 0px;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+            margin-left: -10px;
+            padding-bottom: 20px;
+            padding-top: 10px;
+            left: 0;
+            right: 0;
+        }
+
+        footer:hover{
+            opacity: 0.6;
+        }
+
+        table,
+        th,
+        td {
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        tr.d0 {
+            color: white;
+        }
+
+        tr.d1 {
+            background-color: rgba(131, 131, 131, 0.1);
+            color: white;
+        }
+
+        #leaderboard {
+            float: left;
+            height: 60vh;
+            width: 45%;
+            margin-right: 10%;
+        }
+
+        #leaderboard2 {
+            height: 60vh;
+            width: 45%;
+        }
+
+        .first {
+            border: 1px solid #d4cc00;
+        }
+
+        .second {
+            border: 1px solid #9f9f9f;
+        }
+
+        .third {
+            border: 1px solid #9d4e00;
+        }
+    </style>
+<script type="text/javascript">
+    window.onload = load;
+
+    var leaderBoard = {};
+
+    window.addEventListener("keydown", function (event) {
+        if (event.keyCode == 13) {
+            addPlayer();
+        }
+    }, false);
+
+    function load() {
+        // Initialize players with given scores and additional fields
+        leaderBoard = {
+            "Clan 1": { cDinner: 10, points: 1000, Eliminations: 20, flux: "+5", totals: 1035 },
+            "Clan 2": { cDinner: 8, points: 950, Eliminations: 15, flux: "+4", totals: 977 },
+            "Clan 3": { cDinner: 7, points: 900, Eliminations: 12, flux: "+3", totals: 922 },
+            "Clan 4": { cDinner: 6, points: 850, Eliminations: 10, flux: "+2", totals: 868 },
+            "Clan 5": { cDinner: 5, points: 800, Eliminations: 8, flux: "+1", totals: 814 },
+            "Clan 6": { cDinner: 4, points: 750, Eliminations: 6, flux: "0", totals: 760 },
+            "Clan 7": { cDinner: 3, points: 700, Eliminations: 4, flux: "0", totals: 707 },
+            "Clan 8": { cDinner: 2, points: 650, Eliminations: 3, flux: "0", totals: 655 },
+            "Clan 9": { cDinner: 1, points: 600, Eliminations: 2, flux: "0", totals: 603 },
+            "Clan 10": { cDinner: 0, points: 550, Eliminations: 1, flux: "0", totals: 551 },
+            "Clan 11": { cDinner: 0, points: 500, Eliminations: 0, flux: "0", totals: 500 },
+            "Clan 12": { cDinner: 0, points: 450, Eliminations: 0, flux: "0", totals: 450 },
+            "Clan 13": { cDinner: 0, points: 400, Eliminations: 0, flux: "0", totals: 400 },
+            "Clan 14": { cDinner: 0, points: 350, Eliminations: 0, flux: "0", totals: 350 },
+            "Clan 15": { cDinner: 0, points: 300, Eliminations: 0, flux: "0", totals: 300 },
+            "Clan 16": { cDinner: 0, points: 250, Eliminations: 0, flux: "0", totals: 250 },
+            "Clan 17": { cDinner: 0, points: 200, Eliminations: 0, flux: "0", totals: 200 },
+            "Clan 18": { cDinner: 0, points: 150, Eliminations: 0, flux: "0", totals: 150 },
+            "Clan 19": { cDinner: 0, points: 100, Eliminations: 0, flux: "0", totals: 100 },
+            "Clan 20": { cDinner: 0, points: 50, Eliminations: 0, flux: "0", totals: 50 }
+        };
+
+        document.getElementById("leaderboard").innerHTML = populateTable(0);
+        document.getElementById("leaderboard2").innerHTML = populateTable(10);
+    }
+
+    function addPlayer() {
+        const clanName = document.getElementById("teamname").value;
+        const points = parseInt(document.getElementById("score").value, 10);
+        const flux = document.getElementById("flux").value;
+
+        leaderBoard[clanName] = {
+            cDinner: 0, // Default value, can be modified
+            points: points,
+            Eliminations: 0,   // Default value, can be modified
+            flux: flux,
+            totals: points  // Set totals to points initially
+        };
+
+        document.getElementById("teamname").value = "";
+        document.getElementById("score").value = "";
+        document.getElementById("flux").value = "";
+
+        document.getElementById("leaderboard").innerHTML = populateTable(0);
+        document.getElementById("leaderboard2").innerHTML = populateTable(10);
+    }
+
+    function populateTable(table) {
+        var sortedBoard = sortObject(leaderBoard);
+        var updatedList = "";
+        updatedList =
+            "<col width='50'><col width='130'><col width='130'><col width='130'><col width='130'><col width='130'><col width='130'>" +
+            "<tr class='d0'><td><strong>RANK</strong></td><td><strong>CLAN</strong></td><td><strong>C.DINNER</strong></td><td><strong>POINTS</strong></td><td><strong>ELIMINATIONS</strong></td><td><strong>TOTALS</strong></td><td><strong>FLUX</strong></td></tr>";
+
+        for (var i = table; i < (table + 10); i++) {
+            var position = i + 1;
+            if (sortedBoard[i].value.totals != -999999) {
+                if (i % 2) {
+                    updatedList += "<tr class='d0" + (i === 1 ? " second" : "") + "'><td>" + position + "</td><td>" + sortedBoard[i].key +
+                        "</td><td>" + sortedBoard[i].value.cDinner + "</td><td>" + sortedBoard[i].value.points + "</td><td>" + sortedBoard[i].value.Eliminations + "</td><td>" + sortedBoard[i].value.totals + "</td><td>" + sortedBoard[i].value.flux + "</td></tr>";
+                } else {
+                    updatedList += "<tr class='d1" + (i === 0 ? " first" : (i === 2 ? " third" : "")) + "'><td>" + position + "</td><td>" + sortedBoard[i].key +
+                        "</td><td>" + sortedBoard[i].value.cDinner + "</td><td>" + sortedBoard[i].value.points + "</td><td>" + sortedBoard[i].value.Eliminations + "</td><td>" + sortedBoard[i].value.totals + "</td><td>" + sortedBoard[i].value.flux + "</td></tr>";
+                }
+            } else {
+                updatedList += "<tr class='" + (i % 2 ? "d0" : "d1") + "'><td>" + position + "</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+            }
+        }
+
+        return updatedList;
+    }
+
+    function sortObject(obj) {
+        var sorted = [];
+        for (var key in obj) {
+            sorted.push({ key: key, value: obj[key] });
+        }
+
+        // Sort by totals
+        sorted.sort(function (a, b) {
+            return b.value.totals - a.value.totals; // Sorting by totals
+        });
+
+        return sorted;
+    }
+</script>
+
+
+</head>
+
+<body>
+
+    <header>
+
+        <img src="header.png" height="175">
+        <div class="topic">
+        <h1>ONGOING UNIVERSITY TOURNAMENT RANKINGS</h1>
+        </div>
+    </header>
+    <div id="boards">
+        <table id="leaderboard">
+
+
+        </table>
+
+        <table id="leaderboard2">
+
+
+        </table>
+    </div>
+</body>
+
+</html>
